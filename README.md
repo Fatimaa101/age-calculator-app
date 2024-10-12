@@ -37,8 +37,8 @@ Users should be able to:
 
 ### Screenshot
 
-![Screenshot of the Age Calculator App](/age-calculator-app-main/screenshot.png)
-![Screenshot of the Age Calculator App On Mobile](/age-calculator-app-main/screenshot-mobile.png)
+![Screenshot of the Age Calculator App](screenshot.png)
+![Screenshot of the Age Calculator App On Mobile](screenshot-mobile.png)
 
 ### Links
 
