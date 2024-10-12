@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <title>Frontend Mentor | Age calculator app</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution {
+      font-size: 11px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="input-group">
+      <div class="input-container">
+        <label for="day">DAY</label>
+        <input type="text" id="day" placeholder="DD">
+        <span class="error-message" id="dayerror"></span>
+      </div>
+
+      <div class="input-container">
+        <label for="month">MONTH</label>
+        <input type="text" id="month" placeholder="MM">
+        <span class="error-message" id="montherror"></span>
+      </div>
+
+      <div class="input-container">
+        <label for="year">YEAR</label>
+        <input type="text" id="year" placeholder="YYYY">
+        <span class="error-message" id="yearerror"></span>
+      </div>
+    </div>
+
+    <div class="btn-container">
+      <button onclick="calculateAge()" class="svg-container">
+        <img src="./assets/images/icon-arrow.svg" alt="">
+      </button>
+    </div>
+
+    <div id="result">
+      <div>
+        <span id="blanks">&ndash; &ndash;</span>
+        <span class="resultText">years</span>
+      </div>
+      <div>
+        <span id="blanks">&ndash; &ndash;</span>
+        <span class="resultText">months</span>
+      </div>
+      <div> <span id="blanks">&ndash; &ndash;</span>
+        <span class="resultText">days</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    function calculateAge() {
+      let isValid = true;
+
+      //get inputs
+      const dayInput = parseInt(document.getElementById('day').value, 10);
+      const monthInput = parseInt(document.getElementById('month').value, 10);
+      const yearInput = parseInt(document.getElementById('year').value, 10);
+
+
+      document.querySelectorAll('error-message');
+      const currentYear = new Date().getFullYear();
+      const isLeapYear = (yearInput % 4 === 0 && yearInput % 100 !== 0) || (yearInput % 400 === 0);
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML =
+        ` <div id="result">
+      <div>
+        <span id="blanks">&ndash; &ndash;</span>
+        <span class="resultText">years</span>
+      </div>
+      <div>
+        <span id="blanks">&ndash; &ndash;</span>
+        <span class="resultText">months</span>
+      </div>
+      <div> <span id="blanks">&ndash; &ndash;</span>
+        <span class="resultText">days</span>
+      </div>
+    </div>`;
+
+      //year
+      if (!yearInput) {
+        document.getElementById('yearerror').innerHTML = 'This field is required';
+        document.getElementById('year').style.borderColor = 'hsl(0, 100%, 67%)';
+        document.querySelector('label[for="year"]').style.color = 'hsl(0, 100%, 67%)';
+        isValid = false;
+      }
+      else if (yearInput < 1900 || yearInput > currentYear) {
+        document.getElementById('yearerror').innerHTML = 'Must be in the past';
+        document.getElementById('year').style.borderColor = 'hsl(0, 100%, 67%)';
+        document.querySelector('label[for="year"]').style.color = 'hsl(0, 100%, 67%)';
+        isValid = false;
+      }
+      else {
+        document.getElementById('yearerror').innerHTML = ' ';
+        document.getElementById('year').style.borderColor = '';
+        document.querySelector('label[for="year"]').style.color = '';
+      }
+
+      //month
+      if (!monthInput) {
+        document.getElementById('montherror').innerHTML = 'This field is required';
+        document.getElementById('month').style.borderColor = 'hsl(0, 100%, 67%)';
+        document.querySelector('label[for="month"]').style.color = 'hsl(0, 100%, 67%)';
+        isValid = false;
+      }
+      else if (monthInput < 1 || monthInput > 12) {
+        document.getElementById('montherror').innerHTML = 'Must be a valid month';
+        document.getElementById('month').style.borderColor = 'hsl(0, 100%, 67%)';
+        document.querySelector('label[for="month"]').style.color = 'hsl(0, 100%, 67%)';
+        isValid = false;
+      }
+      else {
+        document.getElementById('montherror').innerHTML = ' ';
+        document.getElementById('month').style.borderColor = '';
+        document.querySelector('label[for="month"]').style.color = '';
+      }
+
+      //day
+      if (!dayInput) {
+        document.getElementById('dayerror').innerHTML = 'This field is required';
+        document.getElementById('day').style.borderColor = 'hsl(0, 100%, 67%)';
+        document.querySelector('label[for="day"]').style.color = 'hsl(0, 100%, 67%)';
+        isValid = false;
+      }
+
+      else if (dayInput < 1 || dayInput > 31) {
+        document.getElementById('dayerror').innerHTML = 'Must be a valid day';
+        document.getElementById('day').style.borderColor = 'hsl(0, 100%, 67%)';
+        document.querySelector('label[for="day"]').style.color = 'hsl(0, 100%, 67%)';
+        isValid = false;
+      }
+
+      else if (monthInput === 2) {
+        // February
+        if ((isLeapYear && dayInput > 29) || (!isLeapYear && dayInput > 28)) {
+          document.getElementById('dayerror').innerHTML = 'February has ' + (isLeapYear ? '29' : '28') + ' days';
+          document.getElementById('day').style.borderColor = 'hsl(0, 100%, 67%)';
+          document.querySelector('label[for="day"]').style.color = 'hsl(0, 100%, 67%)';
+          isValid = false;
+        }
+        else {
+          // Valid day for February
+          document.getElementById('dayerror').innerHTML = '';
+          document.getElementById('day').style.borderColor = '';
+          document.querySelector('label[for="day"]').style.color = '';
+        }
+      }
+
+      else if ([4, 6, 9, 11].includes(monthInput) && dayInput > 30) {
+        // Months with 30 days
+        document.getElementById('dayerror').innerHTML = 'This month has <br> only 30 days';
+        document.getElementById('day').style.borderColor = 'hsl(0, 100%, 67%)';
+        document.querySelector('label[for="day"]').style.color = 'hsl(0, 100%, 67%)';
+        isValid = false;
+      }
+
+      else {
+        // Valid day
+        document.getElementById('dayerror').innerHTML = '';
+        document.getElementById('day').style.borderColor = '';
+        document.querySelector('label[for="day"]').style.color = '';
+      }
+
+      // If validation fails, stop further processing
+      if (!isValid) {
+        return; // Exit the function if validation fails
+      }
+
+      //proceed with the age calculation if the validation passed
+      const birthDate = new Date(yearInput, monthInput - 1, dayInput); // Month is 0-indexed
+      const today = new Date();
+
+      let ageYears = today.getFullYear() - birthDate.getFullYear();
+      let ageMonths = today.getMonth() - birthDate.getMonth();
+      let ageDays = today.getDate() - birthDate.getDate();
+
+
+      // Adjust for negative values
+      if (ageDays < 0) {
+        ageMonths--;
+        ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+
+      // For display the results 
+      resultDiv.innerHTML =
+        `<div id="result">
+    <div> 
+       <span id="blanks">${ageYears}</span>
+      <span class="resultText">years</span>
+    </div>
+    <div>
+      <span id="blanks">${ageMonths}</span>
+      <span class="resultText">months</span>
+    </div>
+    <div>  <span id="blanks">${ageDays}</span>
+      <span class="resultText">days</span></div>
+    </div>`;
+
+
+
+    }
+  </script>
+  </div>
+
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">FATIMA</a>.
+  </div>
+
+</body>
+
+</html>
